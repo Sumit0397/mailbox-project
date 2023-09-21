@@ -1,12 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Signup from './Signup'
 import Login from './Login'
 
 const Authentication = () => {
+  const [showLogin , setShowLogin] = useState(true);
+
+  const hideHandler = () => {
+    setShowLogin(false);
+  }
+
+  const showHandler = () => {
+    setShowLogin(true);
+  }
+
   return (
     <div>
-      <Signup/>
-      <Login/>
+      {!showLogin && <Signup onShow={showHandler}/>}
+      {showLogin && <Login onHide={hideHandler}/>}
     </div>
   )
 }

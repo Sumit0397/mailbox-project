@@ -7,11 +7,11 @@ const Header = () => {
     <div>
       <Navbar className="bg-body-tertiary" bg="dark" data-bs-theme="dark">
       <Container>
-        <Navbar.Brand href="#home">Navbar with text</Navbar.Brand>
+        <Navbar.Brand >Fake Mail</Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           <Navbar.Text>
-            Signed in as: <a href="#login">Mark Otto</a>
+            Signed in as: <a href='/'>Mark Otto</a>
           </Navbar.Text>
         </Navbar.Collapse>
       </Container>

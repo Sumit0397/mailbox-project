@@ -16,3 +16,14 @@
 .action{
     text-align: center;
 }
+
+.toggle{
+    text-align: center;
+    margin: 1rem auto;
+}
+
+.toggle button{
+    border: none;
+    background:transparent;
+    color: black;
+}

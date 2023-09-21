@@ -3,7 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import classes from "./Signup.module.css";
 
-const Signup = () => {
+const Signup = (props) => {
     const emailInputRef = useRef();
     const passInputRef = useRef();
     const conPassInputRef = useRef();
@@ -50,8 +50,12 @@ const Signup = () => {
                 alert(error.message)
             }
         }
-
+        props.onShow();
         formRef.current.reset();
+    }
+
+    const showHandler = () => {
+        props.onShow();
     }
 
 
@@ -78,6 +82,9 @@ const Signup = () => {
                     <Button variant="primary" type="submit">
                         Sign Up
                     </Button>
+                </div>
+                <div className={classes.toggle}>
+                    <span>Already have an account?</span><button onClick={showHandler}>Login</button>
                 </div>
             </Form>
         </div>
