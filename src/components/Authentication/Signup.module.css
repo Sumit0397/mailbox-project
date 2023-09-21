@@ -1,0 +1,18 @@
+.form{
+    max-width: 30rem;
+    margin: 5rem auto;
+    background-color: rgba(34, 9, 177, 0.671);
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.controls{
+    text-align: left;
+    color: white;
+    font-size: 18px;
+}
+
+.action{
+    text-align: center;
+}
