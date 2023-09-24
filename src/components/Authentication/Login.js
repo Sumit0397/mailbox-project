@@ -25,26 +25,26 @@ const Login = (props) => {
         const enteredPass = passInputRef.current.value;
 
         try {
-            const response = await fetch("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDjXIlJQSkQyYiuzZ_k34zUtQ4xghv6GTs",{
-                method : "POST",
-                body : JSON.stringify({
-                    email : enteredEmail,
-                    password : enteredPass,
-                    returnSecureToken : true
+            const response = await fetch("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDjXIlJQSkQyYiuzZ_k34zUtQ4xghv6GTs", {
+                method: "POST",
+                body: JSON.stringify({
+                    email: enteredEmail,
+                    password: enteredPass,
+                    returnSecureToken: true
                 }),
-                headers:{
-                    "Content-Type" : "application/json"
+                headers: {
+                    "Content-Type": "application/json"
                 }
             })
 
-            if(response.ok){
+            if (response.ok) {
                 const data = await response.json();
-                dispatch(authActions.login({tokenId : data.tokenId}))
-                navigate("/profile" , {replace : true})
-            }else{
+                dispatch(authActions.login({ tokenId: data.tokenId, email: enteredEmail}))
+                navigate("/profile", { replace: true })
+            } else {
                 const data = await response.json();
                 let errMsg = "Authentication Failed!";
-                if(data && data.error && data.error.message){
+                if (data && data.error && data.error.message) {
                     errMsg = data.error.message;
                 }
 
@@ -56,12 +56,12 @@ const Login = (props) => {
         formRef.current.reset();
     }
 
-  return (
-    <div className={classes.form}>
+    return (
+        <div className={classes.form}>
             <Form className={classes.controls} ref={formRef} onSubmit={submitHandler}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                     <Form.Label>Email address</Form.Label>
-                    <Form.Control type="email" placeholder="Enter email" required ref={emailInputRef}/>
+                    <Form.Control type="email" placeholder="Enter email" required ref={emailInputRef} />
                     <Form.Text className="text-muted">
                         We'll never share your email with anyone else.
                     </Form.Text>
@@ -69,7 +69,7 @@ const Login = (props) => {
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" placeholder="Password" required ref={passInputRef}/>
+                    <Form.Control type="password" placeholder="Password" required ref={passInputRef} />
                 </Form.Group>
                 <div className={classes.action}>
                     <Button variant="primary" type="submit">
@@ -81,7 +81,7 @@ const Login = (props) => {
                 </div>
             </Form>
         </div>
-  )
+    )
 }
 
 export default Login

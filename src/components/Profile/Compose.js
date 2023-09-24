@@ -1,5 +1,5 @@
-import React , {useRef , useState} from 'react';
-import classes from "./Profile.module.css";
+import React, { useRef, useState } from 'react';
+import classes from "./Compose.module.css";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -8,11 +8,10 @@ import { EditorState } from 'draft-js';
 import { convertToHTML } from 'draft-convert';
 import { useSelector } from 'react-redux';
 
-const Profile = () => {
+const Compose = () => {
   const sendToEmailInputRef = useRef();
   const subInputRef = useRef();
   const formRef = useRef();
-
   const auth = useSelector((state) => state.auth);
 
   const [editorState, updateEditorState] = useState(EditorState.createEmpty());
@@ -25,12 +24,13 @@ const Profile = () => {
       to: sendToEmailInputRef.current.value,
       emailSub: subInputRef.current.value,
       emailContent: convertToHTML(editorState.getCurrentContent()),
+      date: new Date()
     };
 
     // console.log(emailObj)
 
     try {
-        const senderEmail = auth.email.replace(/[.@]/g, "");
+      const senderEmail = auth.email.replace(/[.@]/g, "");
       const res = fetch(
         `https://mailbox-project-589e9-default-rtdb.firebaseio.com/${senderEmail}/sentEmails.json`,
         {
@@ -39,13 +39,38 @@ const Profile = () => {
             ...emailObj,
           }),
           headers: {
-            "content-type": "application/json",
+            "Content-Type": "application/json",
           },
         }
       );
     } catch (error) {
       console.log(error);
     }
+
+    console.log(auth.email);
+
+    const emailObj2 = {
+      form: auth.email,
+      emailSub: subInputRef.current.value,
+      emailContent: convertToHTML(editorState.getCurrentContent()),
+      date: new Date()
+    }
+
+    try {
+      const recieverEmail = sendToEmailInputRef.current.value.replace(/[@.]/g, '');
+      const res = fetch(`https://mailbox-project-589e9-default-rtdb.firebaseio.com/${recieverEmail}/recievedEmails.json`, {
+        method: "POST",
+        body: JSON.stringify({
+          ...emailObj2
+        }),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+    } catch (error) {
+      console.log(error)
+    }
+
     formRef.current.reset();
     updateEditorState('');
   };
@@ -64,9 +89,11 @@ const Profile = () => {
             aria-describedby="btnGroupAddon"
             ref={sendToEmailInputRef}
           />
-          <Button variant="primary" type="submit">
-            Send Email
-          </Button>
+          <div style={{margin: '3px'}}>
+            <Button variant="primary" type="submit">
+              Send Email
+            </Button>
+          </div>
         </InputGroup>
         <InputGroup className={classes.subject}>
           <InputGroup.Text id="btnGroupAddon">Subject</InputGroup.Text>
@@ -93,4 +120,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default Compose;

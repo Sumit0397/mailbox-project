@@ -1,8 +1,12 @@
 import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
+import { useSelector } from 'react-redux';
 
 const Header = () => {
+
+  const user = useSelector((state) => state.auth.email);
+
   return (
     <div>
       <Navbar className="bg-body-tertiary" bg="dark" data-bs-theme="dark">
@@ -11,7 +15,7 @@ const Header = () => {
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           <Navbar.Text>
-            Signed in as: <a href='/'>Mark Otto</a>
+            Signed in as: <a href='/'>{user}</a>
           </Navbar.Text>
         </Navbar.Collapse>
       </Container>
