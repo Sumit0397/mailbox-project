@@ -13,6 +13,8 @@ const Compose = () => {
   const subInputRef = useRef();
   const formRef = useRef();
   const auth = useSelector((state) => state.auth);
+  const [emptyEmail, setEmptyEmail] = useState();
+
 
   const [editorState, updateEditorState] = useState(EditorState.createEmpty());
 
@@ -20,11 +22,22 @@ const Compose = () => {
     e.preventDefault();
     // console.log(sendToEmailInputRef.current.value, subInputRef.current.value);
     // console.log(convertToRaw(editorState.getCurrentContent()).blocks);
+    if (sendToEmailInputRef.current.value === '') {
+      // alert('Please fill recipient email')
+      setEmptyEmail('*Please enter recipient email')
+      setTimeout(() => {
+        setEmptyEmail(null)
+      }, 10000);
+      return;
+    }
+
     const emailObj = {
+      id: Math.random().toString(),
       to: sendToEmailInputRef.current.value,
       emailSub: subInputRef.current.value,
       emailContent: convertToHTML(editorState.getCurrentContent()),
-      date: new Date()
+      date: new Date(),
+      unread: true
     };
 
     // console.log(emailObj)
@@ -50,10 +63,12 @@ const Compose = () => {
     console.log(auth.email);
 
     const emailObj2 = {
+      id: Math.random().toString(),
       form: auth.email,
       emailSub: subInputRef.current.value,
       emailContent: convertToHTML(editorState.getCurrentContent()),
-      date: new Date()
+      date: new Date(),
+      unread: true
     }
 
     try {
@@ -68,7 +83,7 @@ const Compose = () => {
         }
       })
     } catch (error) {
-      console.log(error)
+      alert(error)
     }
 
     formRef.current.reset();
@@ -78,8 +93,8 @@ const Compose = () => {
 
   return (
     <section className={classes.form}>
-      <h1>Welcome to Metro mail</h1>
-      <Form onSubmit={sendEmailHandler} ref={formRef}>
+      <Form ref={formRef}>
+        <p style={{ color: 'red' }}>{emptyEmail}</p>
         <InputGroup className={classes.mail}>
           <InputGroup.Text id="btnGroupAddon">To</InputGroup.Text>
           <Form.Control
@@ -88,12 +103,9 @@ const Compose = () => {
             aria-label="Input group example"
             aria-describedby="btnGroupAddon"
             ref={sendToEmailInputRef}
+            className={emptyEmail ? classes.invalid : ""}
           />
-          <div style={{margin: '3px'}}>
-            <Button variant="primary" type="submit">
-              Send Email
-            </Button>
-          </div>
+          <InputGroup.Text id="btnGroupAddon"><button className={classes.ccBtn}>CC/BCC</button></InputGroup.Text>
         </InputGroup>
         <InputGroup className={classes.subject}>
           <InputGroup.Text id="btnGroupAddon">Subject</InputGroup.Text>
@@ -115,6 +127,9 @@ const Compose = () => {
           // ref={contentInputRef}
           />
         </Form.Group>
+        <Button variant="primary" type="submit" onClick={sendEmailHandler}>
+          Send Email
+        </Button>
       </Form>
     </section>
   )

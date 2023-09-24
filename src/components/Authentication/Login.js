@@ -5,6 +5,7 @@ import classes from "./Signup.module.css";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../../store/authSlice';
+import { inboxItemFill } from '../../store/inboxSlice';
 
 
 const Login = (props) => {
@@ -40,6 +41,7 @@ const Login = (props) => {
             if (response.ok) {
                 const data = await response.json();
                 dispatch(authActions.login({ tokenId: data.tokenId, email: enteredEmail}))
+                dispatch(inboxItemFill(enteredEmail));
                 navigate("/profile", { replace: true })
             } else {
                 const data = await response.json();
