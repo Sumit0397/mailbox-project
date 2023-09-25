@@ -41,7 +41,7 @@ export const inboxItemFill = (email) => {
           // console.log("yes");
         }
       } catch (error) {
-        alert(error);
+        console.log(error)
       }
     };
   };
