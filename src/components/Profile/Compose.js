@@ -14,7 +14,7 @@ const Compose = () => {
   const formRef = useRef();
   const auth = useSelector((state) => state.auth);
   const [emptyEmail, setEmptyEmail] = useState();
-
+  const [successFullySentMail, updateSuccessFullySentMail] = useState(false);
 
   const [editorState, updateEditorState] = useState(EditorState.createEmpty());
 
@@ -56,8 +56,10 @@ const Compose = () => {
           },
         }
       );
+      updateSuccessFullySentMail(true);
+
     } catch (error) {
-      console.log(error);
+      alert(error);
     }
 
     console.log(auth.email);
@@ -88,11 +90,15 @@ const Compose = () => {
 
     formRef.current.reset();
     updateEditorState('');
+    setTimeout(() => {
+      updateSuccessFullySentMail(false);
+    }, 5000);
   };
 
 
   return (
     <section className={classes.form}>
+      {successFullySentMail && <p style={{color: 'green'}}>SuccessFully sent mail.</p>}
       <Form ref={formRef}>
         <p style={{ color: 'red' }}>{emptyEmail}</p>
         <InputGroup className={classes.mail}>

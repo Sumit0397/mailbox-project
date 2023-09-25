@@ -1,4 +1,4 @@
-import React from 'react';
+import React ,{useState} from 'react';
 import classes from "./Inbox.module.css";
 import { Table } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
@@ -12,6 +12,7 @@ const Inbox = () => {
 
     const inboxItem = useSelector((state) => state.inbox.inboxItems);
     // console.log(inboxItem);
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const auth = useSelector((state) => state.auth);
@@ -61,6 +62,7 @@ const Inbox = () => {
     return (
         <div className={classes.inboxCon}>
             <h3>Inbox</h3>
+            {loading && <h5>Loading...</h5>}
             <Table striped hover>
                 <thead>
                     <tr>
