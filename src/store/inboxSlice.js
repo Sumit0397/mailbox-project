@@ -16,6 +16,10 @@ const inboxSlice = createSlice({
             state.messageOpen = action.payload[1];
             const msgopen = JSON.stringify(action.payload[1]);
             localStorage.setItem('message open', msgopen);
+        },
+        removeItem(state,action) {
+          const filterItem = state.inboxItems.filter((element) => element[0] !== action.payload[0]);
+          state.inboxItems = filterItem;
         }
     }
 })

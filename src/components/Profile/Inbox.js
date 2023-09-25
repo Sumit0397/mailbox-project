@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { GoDotFill, GoDot } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
 import { inboxActions } from '../../store/inboxSlice';
+import { MdDelete } from "react-icons/md";
+
 
 const Inbox = () => {
 
@@ -43,6 +45,19 @@ const Inbox = () => {
         }
     };
 
+    const clickDeleteHandler = async (deleteItem) => {
+        // console.log(item);
+        dispatch(inboxActions.removeItem(deleteItem));
+        const email = auth.email.replace(/[\.@]/g, "");
+        try {
+            const resDlt = await fetch(`https://mailbox-project-589e9-default-rtdb.firebaseio.com/${email}/recievedEmails/${deleteItem[0]}.json`, {
+                method: 'DELETE'
+            })
+        } catch (error) {
+            alert(error);
+        }
+    };
+
     return (
         <div className={classes.inboxCon}>
             <h3>Inbox</h3>
@@ -72,6 +87,16 @@ const Inbox = () => {
                             <td>{i[1].emailSub}</td>
                             <td>{i[1].from}</td>
                             <td>{i[1].date}</td>
+                            <td>
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        clickDeleteHandler(i);
+                                    }}
+                                >
+                                    <MdDelete style={{ color: "red", border: "black" }} />
+                                </button>
+                            </td>
                         </tr>
                     ))}
 
